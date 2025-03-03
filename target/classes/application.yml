@@ -1,0 +1,28 @@
+server:
+  port: 8080  # Gateway será el punto de entrada en este puerto
+
+spring:
+  application:
+    name: gateway
+
+  cloud:
+    gateway:
+      routes:
+        - id: microservicio-buscador
+          uri: lb://microservicio-buscador
+          predicates:
+            - Path=/items/**
+            
+        - id: microservicio-operador
+          uri: lb://microservicio-operador
+          predicates:
+            - Path=/operaciones/**
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://eureka-server:8761/eureka/  # URL del Eureka Server
+    register-with-eureka: true
+    fetch-registry: true
+  instance:
+    prefer-ip-address: true
